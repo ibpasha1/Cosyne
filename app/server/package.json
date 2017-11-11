@@ -1,0 +1,36 @@
+{
+  "name": "cosyne",
+  "version": "0.0.1",
+  "description": "Marketing Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibpasha1/Cosyne.git"
+  },
+  "keywords": [
+    "marketing",
+    "cosyne",
+    "social",
+    "media"
+  ],
+  "author": "Ibrahim Pasha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ibpasha1/Cosyne/issues"
+  },
+  "homepage": "https://github.com/ibpasha1/Cosyne#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "js-yaml": "^3.10.0",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.13.1",
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.4.0",
+    "socketio": "^1.0.0"
+  }
+}
