@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt   = require('bcrypt-nodejs');
-
+const Campaign = require('./campaign');
 let Instagram = new Schema({
     username: String,
     num_followers: Number,
@@ -30,6 +30,7 @@ let User = mongoose.Schema({
   business: String,
   account_type: { type: String, enum: ['business', 'influencer'], default: "influencer"},
   verification_hash: String,
+  campaigns: [{type: Schema.ObjectId, ref: "Campaign"}],
   create_date: { type: Date, default: Date.now}
 });
 

@@ -102,6 +102,38 @@ apiRoutes.put('/users', function(req, res){
   });
 });
 
+apiRoutes.post('/campaigns', function(req, res){
+  User.findOne({ 'email' : req.decoded.email }, function(err, user) {
+    if (err)
+      return done(err);
+    if (user) {
+      let campaign = new Campaign();
+      campaign.name = req.body.name;
+      campaign.type = req.body.type;
+      campaign.save(function(err) {
+        if (err)
+            throw err;
+      });
+      user.campaigns.push(campaign);
+      user.save(function(err) {
+        if (err)
+            throw err;
+      });
+      res.json({msg: 'Campaign Created' });
+    }
+  });
+});
+
+apiRoutes.get('/campaigns', function(req, res){
+  User.findOne({ 'email' : req.decoded.email }).populate('campaigns').exec(function (err, user) {
+    if (err)
+      return done(err);
+    if (user) {
+      return res.json(user.toJSON().campaigns);
+    }
+  });
+});
+
 app.use('/api', apiRoutes);
 
 app.post('/login', function(req, res){
