@@ -147,7 +147,11 @@ app.post('/login', function(req, res){
       } else {
         // if user is found and password is right
         // create a token
-        var token = jwt.sign(user.toJSON(), app.get('secret'), {
+        let userJSON = user.toJSON();
+        var token = jwt.sign({
+          'username': userJSON.username,
+          'email': userJSON.email
+        }, app.get('secret'), {
           expiresIn: 1440 // 24 hours
         });
 
