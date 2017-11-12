@@ -1,21 +1,22 @@
-const express = require('express');
-const yaml = require('js-yaml');
-const fs = require('fs');
-const app = express();
+const bluebird = require('bluebird');
 const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
+const express = require('express');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const nodemailer = require('nodemailer');
+const yaml = require('js-yaml');
+
+const Campaign = require('./models/campaign.js');
+const User = require('./models/user.js');
+
+const app = express();
+const apiRoutes = express.Router();
 
 let config = {};
-
-let apiRoutes = express.Router();
-app.use(bodyParser.json());
-
-// use morgan to log requests to the console
-app.use(morgan('dev'));
-
 
 try {
   config = yaml.safeLoad(fs.readFileSync('config/app.yml', 'utf-8'));
@@ -23,9 +24,18 @@ try {
   console.log(e);
 }
 
-mongoose.connect(config.database);
+
+app.use(bodyParser.json());
 app.set('port', process.env.PORT || config.port);
 app.set('secret', config.secret);
+
+// use morgan to log requests to the console
+app.use(morgan('dev'));
+
+mongoose.Promise = bluebird;
+
+mongoose.connect(config.database, {useMongoClient: true, autoIndex: false});
+
 
 apiRoutes.use(function(req, res, next){
   // Website you wish to allow to connect
@@ -70,28 +80,46 @@ app.use(function(req, res, next){
   next();
 });
 
+apiRoutes.put('/users', function(req, res){
+  User.findOne({ 'email' : req.decoded.email }, function(err, user) {
+    if (err)
+      return done(err);
+    if (user) {
+      user.username = req.body.username || user.username;
+      user.first_name = req.body.first_name || user.first_name;
+      user.last_name = req.body.last_name || user.last_name;
+      if (req.body.password){
+        user.password = user.generateHash(req.body.password);
+      }
+      user.save(function(err) {
+        if (err)
+            throw err;
+        //emailer.sendVerificationEmail(req.body.email, hash);
+        res.json({msg: 'OK' });
+      });
+
+    }
+  });
+});
+
 app.use('/api', apiRoutes);
 
 app.post('/login', function(req, res){
   User.findOne({ 'email' :  req.body.email }, function(err, user) {
     if (err) throw err;
-
     if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
+      res.status(403).send({msg: 'User not found'});
     } else if (user) {
       if (!user.validPassword(req.body.password)) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        res.json({msg: 'Authentication failed. Wrong password.' });
       } else {
-
         // if user is found and password is right
         // create a token
-        var token = jwt.sign(user, app.get('secret'), {
+        var token = jwt.sign(user.toJSON(), app.get('secret'), {
           expiresIn: 1440 // 24 hours
         });
 
         res.json({
-          success: true,
-          message: 'Authentication successful!',
           token: token
         });
       }
@@ -104,9 +132,8 @@ app.post('/register', function(req, res){
     if (err)
       return done(err);
     if (user) {
-      res.json({ success: false, message: 'That email is already taken.' });
+      res.json({ msg: 'That email is already taken.' });
     } else {
-      hash = emailer.randomHash(256);
       var newUser = new User();
       newUser.email = req.body.email;
       newUser.username = req.body.username;
@@ -115,12 +142,11 @@ app.post('/register', function(req, res){
       newUser.account_type = req.body.account_type;
       newUser.password = newUser.generateHash(req.body.password);
       newUser.verified = false;
-      newUser.verification_hash = hash;
       newUser.save(function(err) {
         if (err)
             throw err;
-        emailer.sendVerificationEmail(req.body.email, hash);
-        res.json({ success: true, message: 'Account created successfully!' });
+        //emailer.sendVerificationEmail(req.body.email, hash);
+        res.json({msg: 'Account created successfully!' });
       });
 
     }
