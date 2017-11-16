@@ -1,62 +1,114 @@
 import React, { Component } from 'react';
+const appStyles = require('../components/styles');
+
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  PixelRatio,
 } from 'react-native';
 
-import { setTheme, MKColor } from 'react-native-material-kit';
-// customize the material design theme
-setTheme({
-  primaryColor: MKColor.Purple,
-  primaryColorRGB: MKColor.RGBPurple,
-  accentColor: MKColor.Amber,
-});
+import {
+  MKTextField,
+  MKColor,
+  mdl,
+} from 'react-native-material-kit';
 
-var TextFields = require('../components/textfields');
+const styles = Object.assign({}, appStyles, StyleSheet.create({
+  col: {
+    flex: 1,
+    flexDirection: 'column',
+    // alignItems: 'center', // this will prevent TFs from stretching horizontal
+    marginLeft: 7, marginRight: 7,
+    // backgroundColor: MKColor.Lime,
+  },
+  textfield: {
+    height: 28,  // have to do it on iOS
+    marginTop: 32,
+  },
+  textfieldWithFloatingLabel: {
+    height: 48,  // have to do it on iOS
+    marginTop: 10,
+  },
+}));
+
+const Textfield = MKTextField.textfield()
+  .withPlaceholder('Text...')
+  .withStyle(styles.textfield)
+  .withTextInputStyle({flex: 1})
+  .build();
+
+const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
+  .withPlaceholder('Number...')
+  .withStyle(styles.textfieldWithFloatingLabel)
+  .withTextInputStyle({flex: 1})
+  .withFloatingLabelFont({
+    fontSize: 10,
+    fontStyle: 'italic',
+    fontWeight: '200',
+  })
+  .withKeyboardType('numeric')
+  .build();
+
+const ColoredTextfield = mdl.Textfield.textfield()
+  .withPlaceholder('Text...')
+  .withStyle(styles.textfield)
+  .withTintColor(MKColor.Lime)
+  .withTextInputStyle({color: MKColor.Orange, flex: 1})
+  .build();
+
+const PasswordInput = mdl.Textfield.textfieldWithFloatingLabel()
+  .withPassword(true)
+  .withPlaceholder('Password')
+  .withDefaultValue('!123')
+  .withHighlightColor(MKColor.Lime)
+  .withStyle(styles.textfieldWithFloatingLabel)
+  .withTextInputStyle({flex: 1})
+  .withOnFocus(() => console.log('Focus'))
+  .withOnBlur(() => console.log('Blur'))
+  .withOnEndEditing((e) => console.log('EndEditing', e.nativeEvent.text))
+  .withOnSubmitEditing((e) => console.log('SubmitEditing', e.nativeEvent.text))
+  .withOnTextChange((e) => console.log('TextChange', e))
+  .withOnChangeText((e) => console.log('ChangeText', e))
+  .build();
 
 class Login extends Component {
+  componentDidMount(){
+    setTimeout((() => {
+      if (this.refs.defaultInput) {
+        this.refs.defaultInput.focus();
+      }
+    }), 1000);
+  }
+
   render(){
     return (
-      <ScrollView style={styles.list} contentContainerStyle={styles.container}>
-        <TouchableOpacity onPress={() => {
-          this.props.navigator.push({
-            title: undefined,
-            screen: "cosyne.TextFields"
-          });
-        }}>
-          <Text style={styles.pushLabel}>Text Fields</Text>
-        </TouchableOpacity>
-     </ScrollView>
+      <ScrollView style={styles.scrollView}
+                  contentContainerStyle={styles.container}>
+        <View style={styles.row}>
+          <View style={styles.col}>
+            <Textfield/>
+            <Text style={styles.legendLabel}>Textfield</Text>
+          </View>
+          <View style={styles.col}>
+            <TextfieldWithFloatingLabel ref="defaultInput"/>
+            <Text style={styles.legendLabel}>With floating label</Text>
+          </View>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.col}>
+            <ColoredTextfield/>
+            <Text style={styles.legendLabel}>Textfield</Text>
+          </View>
+          <View style={styles.col}>
+            <PasswordInput/>
+            <Text style={styles.legendLabel}>With floating label</Text>
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 }
-
-var styles = StyleSheet.create({
-  list: {
-    backgroundColor: '#F5FCFF',
-    paddingTop: 20,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginTop: 20, marginBottom: 0,
-  },
-  pushLabel: {
-    padding: 10,
-    color: '#2196F3',
-  }
-});
 
 export default Login;

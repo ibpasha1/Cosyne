@@ -2,6 +2,7 @@ import { Navigation } from 'react-native-navigation';
 
 import Home from './home';
 import Login from './login';
+import Welcome from './welcome';
 import TextFields from '../components/textfields';
 
 // register all screens of the app (including internal ones)
