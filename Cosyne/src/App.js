@@ -21,7 +21,7 @@ function startInnerScope(){
   Navigation.startTabBasedApp({
     tabs: [
       {
-        label: 'FUCK',
+        label: 'One',
         screen: 'cosyne.Welcome', // iOS only
         title: 'Screen One'
       },
