@@ -1,33 +1,22 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt   = require('bcrypt-nodejs');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt   = require('bcrypt-nodejs');
 const Campaign = require('./campaign');
-let Instagram = new Schema({
-    username: String,
-    num_followers: Number,
-    tier: Number
-});
-
-let Address = new Schema({
-  addr_line1: String,
-  addr_line2: String,
-  position: String,
-  city: String,
-  state: String,
-  zip: String,
-});
+const Loc = require('./location');
+const Instagram = require('./instagram.js');
+const Business = require('./business.js');
 
 let User = mongoose.Schema({
-  email: String,
+  email: Schema.Types.ObjectId,
   username: {type: String},
   password: String,
   active: Boolean,
   first_name: String,
   last_name: String,
   verified: Boolean,
-  address: Address,
-  instagram: Instagram,
-  business: String,
+  address: { type: Schema.Types.ObjectId, ref: 'Loc'},
+  instagram: [{ type: Schema.Types.ObjectId, ref: 'Instagram'}],
+  business: [{ type: Schema.Types.ObjectId, ref: 'Business'}],
   account_type: { type: String, enum: ['business', 'influencer'], default: "influencer"},
   verification_hash: String,
   campaigns: [{type: Schema.ObjectId, ref: "Campaign"}],

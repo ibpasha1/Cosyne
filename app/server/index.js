@@ -10,7 +10,9 @@ const morgan = require('morgan');
 const nodemailer = require('nodemailer');
 const yaml = require('js-yaml');
 
+const Business = require('./models/business.js');
 const Campaign = require('./models/campaign.js');
+const Loc = require('./models/location.js');
 const User = require('./models/user.js');
 
 const app = express();

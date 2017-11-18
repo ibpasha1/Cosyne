@@ -63,30 +63,28 @@ class Welcome extends Component {
     const buttons = ['Hello', 'World', 'Buttons']
     const { selectedIndex } = this.state;
     return (
-          <Grid>
-            <Row size={50}>
-            </Row>
-            <Row size={25}>
-              <Col>
-                <Button
-                  raised
-                  icon={{name: 'launch'}}
-                  backgroundColor={'#397af8'}
-                  borderRadius ={12}
-                  title='Login'
-                />
-                <Button
-                  raised
-                  backgroundColor={'#397af8'}
-                  borderRadius ={12}
-                  icon={{name: 'flight'}}
-                  title='Register'
-                />
-              </Col>
-            </Row>
-            <Row size={25}>
-            </Row>
-          </Grid>
+      <Grid>
+        <Row size={50}></Row>
+        <Row size={25}>
+          <Col>
+            <Button
+              raised
+              icon={{name: 'launch'}}
+              backgroundColor={'#397af8'}
+              borderRadius ={12}
+              title='Login'
+            />
+            <Button
+              raised
+              backgroundColor={'#397af8'}
+              borderRadius ={12}
+              icon={{name: 'flight'}}
+              title='Register'
+            />
+          </Col>
+        </Row>
+        <Row size={25}></Row>
+      </Grid>
     );
   }
 }
