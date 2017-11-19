@@ -7,7 +7,7 @@ const Instagram = require('./instagram.js');
 const Business = require('./business.js');
 
 let User = mongoose.Schema({
-  email: Schema.Types.ObjectId,
+  email: String,
   username: {type: String},
   password: String,
   active: Boolean,

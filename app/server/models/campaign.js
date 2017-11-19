@@ -8,7 +8,7 @@ let Campaign = mongoose.Schema({
   description: String,
   active: Boolean,
   expiration_date: Date,
-  type: String
+  type: String,
   claimers: [String],
   qr_code: String,
   max_claims: Number

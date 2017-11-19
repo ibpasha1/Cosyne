@@ -142,7 +142,7 @@ app.post('/login', function(req, res){
   User.findOne({ 'email' :  req.body.email }, function(err, user) {
     if (err) throw err;
     if (!user) {
-      res.status(403).send({msg: 'User not found'});
+      res.status(500).send({msg: 'User not found'});
     } else if (user) {
       if (!user.validPassword(req.body.password)) {
         res.json({msg: 'Authentication failed. Wrong password.' });
@@ -165,12 +165,24 @@ app.post('/login', function(req, res){
   });
 });
 
+app.post('/check_email', function(req,res){
+  User.findOne({ 'email' : req.body.email }, function(err, user) {
+    if (err)
+      return done(err);
+    if(user){
+      res.json({msg: 'email_taken'});
+    } else {
+      res.json({msg: 'available'});
+    }
+  });
+});
+
 app.post('/register', function(req, res){
   User.findOne({ 'email' : req.body.email }, function(err, user) {
     if (err)
       return done(err);
     if (user) {
-      res.json({ msg: 'That email is already taken.' });
+      res.status(500).send({ msg: 'email_taken' });
     } else {
       var newUser = new User();
       newUser.email = req.body.email;

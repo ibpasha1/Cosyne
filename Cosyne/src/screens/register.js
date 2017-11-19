@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -21,9 +22,10 @@ class Register extends Component {
   constructor(props){
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
-      password_confirm: ''
+      password_confirm: '',
+      pass_match: false
     }
     this._toggleNavBar = 'hidden';
     let to = this._toggleNavBar;
@@ -53,21 +55,54 @@ class Register extends Component {
   }
   handleSubmit = () =>
   {
-    console.warn("SUBIT");
     fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(
-        this.state
-      )
+      body: JSON.stringify(this.state)
+    }).then((response) => {
+      if (!response.ok){
+        console.warn(response.json());
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      console.warn(responseJson);
+    }).catch((err)=> {
+      Alert.alert(
+            'Alert',
+            'ERROR',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed!')},
+            ]
+          )
     });
   }
   onTyping = () =>
   {
 
+  }
+  handleEmail = (email) => {
+    this.setState({email: email});
+    fetch('http://localhost:3000/check_email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({email: email})
+    }).then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({validationMessage: (responseJson.msg === 'email_taken' ? 'Email taken' : null)});
+    }).catch((err)=> {});
+  }
+  comparePasswords = (value) => {
+    this.setState({password_confirm: value});
+    this.setState({
+      pass_match: (value && this.state.password === value ? true : false)
+    });
   }
   render(){
     const buttons = ['Hello', 'World', 'Buttons'];
@@ -94,12 +129,18 @@ class Register extends Component {
             <Col size={8}></Col>
             <Col size={84}>
               <Hoshi
+                autoCapitalize = 'none'
                 label={'Email address'}
                 borderColor={'#008894'}
-                onChangeText={(username) => this.setState({username})}
-                value={this.state.username}
+                onChangeText={(email) => this.handleEmail(email)}
+                value={this.state.email}
               />
+              {
+                this.state.validationMessage  ? <FormValidationMessage>{this.state.validationMessage}</FormValidationMessage> : null
+              }
               <Hoshi
+                autoCapitalize = 'none'
+                editable={this.state.validationMessage  ? false : true}
                 secureTextEntry
                 label={'Password'}
                 borderColor={'#008894'}
@@ -107,10 +148,12 @@ class Register extends Component {
                 value={this.state.password}
               />
               <Hoshi
+                autoCapitalize = 'none'
+                editable={this.state.validationMessage  ? false : true}
                 secureTextEntry
                 label={'Password confirm'}
                 borderColor={'#008894'}
-                onChangeText={(password_confirm) => this.setState({password_confirm})}
+                onChangeText={(password_confirm) => this.comparePasswords(password_confirm)}
                 value={this.state.password_confirm}
               />
             </Col>
@@ -124,6 +167,7 @@ class Register extends Component {
               </Row>
               <Button
                 raised
+                disabled = {this.state.validationMessage || !this.state.pass_match ? true : false}
                 buttonStyle = {{
                   backgroundColor: 'white',
                   borderColor: '#334433',
