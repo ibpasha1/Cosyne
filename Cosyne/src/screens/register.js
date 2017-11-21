@@ -80,10 +80,6 @@ class Register extends Component {
           )
     });
   }
-  onTyping = () =>
-  {
-
-  }
   handleEmail = (email) => {
     this.setState({email: email});
     fetch('http://localhost:3000/check_email', {

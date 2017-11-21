@@ -1,112 +1,158 @@
 import React, { Component } from 'react';
-const appStyles = require('../components/styles');
-
+import PropTypes from 'prop-types';
 import {
+  Alert,
+  Image,
   StyleSheet,
   Text,
   View,
-  ScrollView,
   PixelRatio,
+  TouchOpacity,
 } from 'react-native';
 
-import {
-  MKTextField,
-  MKColor,
-  mdl,
-} from 'react-native-material-kit';
+import { Navigation } from 'react-native-navigation';
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { Button, ButtonGroup, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+import { Hoshi } from 'react-native-textinput-effects';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-const styles = Object.assign({}, appStyles, StyleSheet.create({
-  col: {
-    flex: 1,
-    flexDirection: 'column',
-    // alignItems: 'center', // this will prevent TFs from stretching horizontal
-    marginLeft: 7, marginRight: 7,
-    // backgroundColor: MKColor.Lime,
-  },
-  textfield: {
-    height: 28,  // have to do it on iOS
-    marginTop: 32,
-  },
-  textfieldWithFloatingLabel: {
-    height: 48,  // have to do it on iOS
-    marginTop: 10,
-  },
-}));
-
-const Textfield = MKTextField.textfield()
-  .withPlaceholder('Text...')
-  .withStyle(styles.textfield)
-  .withTextInputStyle({flex: 1})
-  .build();
-
-const TextfieldWithFloatingLabel = MKTextField.textfieldWithFloatingLabel()
-  .withPlaceholder('Number...')
-  .withStyle(styles.textfieldWithFloatingLabel)
-  .withTextInputStyle({flex: 1})
-  .withFloatingLabelFont({
-    fontSize: 10,
-    fontStyle: 'italic',
-    fontWeight: '200',
-  })
-  .withKeyboardType('numeric')
-  .build();
-
-const ColoredTextfield = mdl.Textfield.textfield()
-  .withPlaceholder('Text...')
-  .withStyle(styles.textfield)
-  .withTintColor(MKColor.Lime)
-  .withTextInputStyle({color: MKColor.Orange, flex: 1})
-  .build();
-
-const PasswordInput = mdl.Textfield.textfieldWithFloatingLabel()
-  .withPassword(true)
-  .withPlaceholder('Password')
-  .withDefaultValue('!123')
-  .withHighlightColor(MKColor.Lime)
-  .withStyle(styles.textfieldWithFloatingLabel)
-  .withTextInputStyle({flex: 1})
-  .withOnFocus(() => console.log('Focus'))
-  .withOnBlur(() => console.log('Blur'))
-  .withOnEndEditing((e) => console.log('EndEditing', e.nativeEvent.text))
-  .withOnSubmitEditing((e) => console.log('SubmitEditing', e.nativeEvent.text))
-  .withOnTextChange((e) => console.log('TextChange', e))
-  .withOnChangeText((e) => console.log('ChangeText', e))
-  .build();
+const appStyles = require('../components/styles');
 
 class Login extends Component {
-  componentDidMount(){
-    setTimeout((() => {
-      if (this.refs.defaultInput) {
-        this.refs.defaultInput.focus();
-      }
-    }), 1000);
+  constructor(props){
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    }
+    this._toggleNavBar = 'hidden';
+    let to = this._toggleNavBar;
+    this.props.navigator.toggleNavBar({
+      to,
+      animated: false,
+    });
+    this.state = {
+      selectedIndex: 2
+    }
+    this.updateIndex = this.updateIndex.bind(this)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
+  componentDidMount(){
 
+  }
+  onNavigatorEvent(event) {
+    if (event.id === 'contextualMenuDismissed') {
+      this._contextualMenu = false;
+    }
+  }
+  verifyInput = () => {
+
+  }
+  updateIndex (selectedIndex) {
+    this.setState({selectedIndex})
+  }
+  handleSubmit = () =>
+  {
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.state)
+    }).then((response) => {
+      if (!response.ok){
+        console.warn(response.json());
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      console.warn(responseJson);
+    }).catch((err)=> {
+      Alert.alert(
+            'Alert',
+            'ERROR',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed!')},
+            ]
+          )
+    });
+  }
+  comparePasswords = (value) => {
+    this.setState({password_confirm: value});
+    this.setState({
+      pass_match: (value && this.state.password === value ? true : false)
+    });
+  }
   render(){
+    const buttons = ['Hello', 'World', 'Buttons'];
+    const { selectedIndex } = this.state;
     return (
-      <ScrollView style={styles.scrollView}
-                  contentContainerStyle={styles.container}>
-        <View style={styles.row}>
-          <View style={styles.col}>
-            <Textfield/>
-            <Text style={styles.legendLabel}>Textfield</Text>
-          </View>
-          <View style={styles.col}>
-            <TextfieldWithFloatingLabel ref="defaultInput"/>
-            <Text style={styles.legendLabel}>With floating label</Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.col}>
-            <ColoredTextfield/>
-            <Text style={styles.legendLabel}>Textfield</Text>
-          </View>
-          <View style={styles.col}>
-            <PasswordInput/>
-            <Text style={styles.legendLabel}>With floating label</Text>
-          </View>
-        </View>
-      </ScrollView>
+      <KeyboardAwareScrollView>
+        <Grid>
+          <Row>
+            <Text style={{height: 100}}>
+            </Text>
+          </Row>
+          <Row>
+            <Col size={15} />
+            <Col size={70}>
+              <Image style={{
+                flex: 1,
+                aspectRatio: 1.5,
+                resizeMode: 'contain'}}
+                source={require('../assets/imgs/COSIGN-LOGO.jpg')} />
+            </Col>
+            <Col size={15} />
+          </Row>
+          <Row>
+            <Col size={8}></Col>
+            <Col size={84}>
+              <Hoshi
+                autoCapitalize = 'none'
+                label={'Email address'}
+                borderColor={'#008894'}
+                onChangeText={(email) => this.setState({email})}
+                value={this.state.email}
+              />
+              {
+                this.state.validationMessage  ? <FormValidationMessage>{this.state.validationMessage}</FormValidationMessage> : null
+              }
+              <Hoshi
+                autoCapitalize = 'none'
+                editable={this.state.validationMessage  ? false : true}
+                secureTextEntry
+                label={'Password'}
+                borderColor={'#008894'}
+                onChangeText={(password) => this.setState({password})}
+                value={this.state.password}
+              />
+            </Col>
+            <Col size={8}></Col>
+          </Row>
+          <Row>
+            <Col size={100}>
+              <Row>
+                <Text style={{height: 100}}>
+                </Text>
+              </Row>
+              <Button
+                raised
+                disabled = {this.state.validationMessage || !this.state.pass_match ? true : false}
+                buttonStyle = {{
+                  backgroundColor: 'white',
+                  borderColor: '#334433',
+                }}
+                color = '#334433'
+                icon={{name: 'launch', color: '#334433'}}
+                title='Launch'
+                underlayColor = '#334433'
+                onPress = {this.handleSubmit}
+              />
+            </Col>
+          </Row>
+        </Grid>
+      </KeyboardAwareScrollView>
     );
   }
 }
