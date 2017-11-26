@@ -15,6 +15,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import { Button, ButtonGroup, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import SInfo from 'react-native-sensitive-info'
 
 const appStyles = require('../components/styles');
 
@@ -36,6 +37,9 @@ class Login extends Component {
     }
     this.updateIndex = this.updateIndex.bind(this)
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+  componentWillMount(){
+
   }
   componentDidMount(){
 
@@ -68,6 +72,7 @@ class Login extends Component {
     })
     .then((responseJson) => {
       console.warn(responseJson);
+      //SInfo.setItem('token', responseJson['token'], {});
     }).catch((err)=> {
       Alert.alert(
             'Alert',
@@ -109,6 +114,7 @@ class Login extends Component {
             <Col size={8}></Col>
             <Col size={84}>
               <Hoshi
+                isRequired
                 autoCapitalize = 'none'
                 label={'Email address'}
                 borderColor={'#008894'}
@@ -119,6 +125,7 @@ class Login extends Component {
                 this.state.validationMessage  ? <FormValidationMessage>{this.state.validationMessage}</FormValidationMessage> : null
               }
               <Hoshi
+                isRequired
                 autoCapitalize = 'none'
                 editable={this.state.validationMessage  ? false : true}
                 secureTextEntry
