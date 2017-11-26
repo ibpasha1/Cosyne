@@ -59,9 +59,9 @@ global.startInnerScope = function(){
         title: 'Social Media'
       },
       {
-        label: 'Five',
-        screen: 'cosyne.Home', // iOS only
-        title: 'Screen One'
+        label: 'Media Profile',
+        screen: 'cosyne.MediaProfile', // iOS only
+        title: 'Media Profile'
       }
     ]
   });
