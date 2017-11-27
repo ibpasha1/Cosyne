@@ -80,6 +80,7 @@ class Welcome extends Component {
               borderRadius ={12}
               icon={{name: 'flight'}}
               title='Register'
+              onPress={global.startInnerScope}
             />
           </Col>
         </Row>

@@ -1,12 +1,9 @@
 import { Navigation } from 'react-native-navigation';
 import React, { Component } from 'react';
 import { registerScreens } from './screens';
-
 registerScreens();
 
-startOuterScope();
-
-function startOuterScope(){
+global.startOuterScope = function(){
   Navigation.startSingleScreenApp({
     screen: {
       screen: 'cosyne.Welcome', // unique ID registered with Navigation.registerScreen
@@ -39,12 +36,12 @@ function startOuterScope(){
   });
 }
 
-function startInnerScope(){
+global.startInnerScope = function(){
   Navigation.startTabBasedApp({
     tabs: [
       {
-        label: 'One',
-        screen: 'cosyne.Welcome', // iOS only
+        label: 'Dashboard',
+        screen: 'cosyne.Dashboard', // iOS only
         title: 'Screen One'
       },
       {
@@ -55,7 +52,19 @@ function startInnerScope(){
         label: 'Three',
         screen: 'cosyne.Login', // iOS only
         title: 'Login'
+      },
+      {
+        label: 'Social Media',
+        screen: 'cosyne.SocialMedia', // iOS only
+        title: 'Social Media'
+      },
+      {
+        label: 'Media Profile',
+        screen: 'cosyne.MediaProfile', // iOS only
+        title: 'Media Profile'
       }
     ]
   });
 }
+
+global.startOuterScope();

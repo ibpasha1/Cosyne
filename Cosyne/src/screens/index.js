@@ -5,6 +5,9 @@ import Login from './login';
 import Welcome from './welcome';
 import TextFields from '../components/textfields';
 import Register from './register';
+import Dashboard from './dashboard';
+import SocialMedia from './social_media';
+import MediaProfile from './media_profile';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -13,4 +16,7 @@ export function registerScreens() {
   Navigation.registerComponent('cosyne.Login', () => Login);
   Navigation.registerComponent('cosyne.TextFields', () => TextFields);
   Navigation.registerComponent('cosyne.Register', () => Register);
+  Navigation.registerComponent('cosyne.Dashboard', () => Dashboard);
+  Navigation.registerComponent('cosyne.SocialMedia', () => SocialMedia);
+  Navigation.registerComponent('cosyne.MediaProfile', () => MediaProfile);
 }
