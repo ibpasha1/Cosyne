@@ -159,7 +159,7 @@ class MediaProfile extends Component {
             </Col>
           </Row>
           <Row>
-            <Col size={33}>
+            <Col size={50}>
               <Hoshi
                 isRequired
                 label={'City'}
@@ -169,20 +169,10 @@ class MediaProfile extends Component {
                 value={this.state.email}
               />
             </Col>
-            <Col size={27}>
+            <Col size={50}>
               <Hoshi
                 isRequired
                 label={'State'}
-                autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
-              />
-            </Col>
-            <Col size={40}>
-              <Hoshi
-                isRequired
-                label={'Zip'}
                 autoCapitalize = 'none'
                 borderColor={'#008894'}
                 onChangeText={(email) => this.setState({email})}

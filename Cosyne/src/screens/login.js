@@ -71,7 +71,14 @@ class Login extends Component {
       return response.json();
     })
     .then((responseJson) => {
-      console.warn(responseJson);
+      if (responseJson['token']){
+        SInfo.setItem('token', responseJson['token'], {
+          sharedPreferencesName: 'mySharedPrefs',
+          keychainService: 'myKeychain'
+          }).then((value) =>
+            global.startInnerScope()
+        );
+      }
       //SInfo.setItem('token', responseJson['token'], {});
     }).catch((err)=> {
       Alert.alert(
@@ -88,6 +95,9 @@ class Login extends Component {
     this.setState({
       pass_match: (value && this.state.password === value ? true : false)
     });
+  }
+  login = () => {
+
   }
   render(){
     const buttons = ['Hello', 'World', 'Buttons'];
@@ -145,7 +155,7 @@ class Login extends Component {
               </Row>
               <Button
                 raised
-                disabled = {this.state.validationMessage || !this.state.pass_match ? true : false}
+                disabled = {false}
                 buttonStyle = {{
                   backgroundColor: 'white',
                   borderColor: '#334433',

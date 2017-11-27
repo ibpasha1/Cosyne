@@ -178,29 +178,33 @@ app.post('/check_email', function(req,res){
 });
 
 app.post('/register', function(req, res){
-  User.findOne({ 'email' : req.body.email }, function(err, user) {
-    if (err)
-      return done(err);
-    if (user) {
-      res.status(500).send({ msg: 'email_taken' });
-    } else {
-      var newUser = new User();
-      newUser.email = req.body.email;
-      newUser.username = req.body.username;
-      newUser.first_name = req.body.firstname;
-      newUser.last_name = req.body.lastname;
-      newUser.account_type = req.body.account_type;
-      newUser.password = newUser.generateHash(req.body.password);
-      newUser.verified = false;
-      newUser.save(function(err) {
-        if (err)
-            throw err;
-        //emailer.sendVerificationEmail(req.body.email, hash);
-        res.json({msg: 'Account created successfully!' });
-      });
+  if (req.body.email){
+    User.findOne({ 'email' : req.body.email }, function(err, user) {
+      if (err)
+        return done(err);
+      if (user) {
+        res.status(500).send({ msg: 'email_taken' });
+      } else {
+        var newUser = new User();
+        newUser.email = req.body.email;
+        newUser.username = req.body.username;
+        newUser.first_name = req.body.firstname;
+        newUser.last_name = req.body.lastname;
+        newUser.account_type = req.body.account_type;
+        newUser.password = newUser.generateHash(req.body.password);
+        newUser.verified = false;
+        newUser.save(function(err) {
+          if (err)
+              throw err;
+          //emailer.sendVerificationEmail(req.body.email, hash);
+          res.json({msg: 'Account created successfully!' });
+        });
 
-    }
-  });
+      }
+    });
+  } else {
+    res.status(500).send({ msg: 'null_email'});
+  }
 });
 
 app.listen(app.get('port'), function(){
