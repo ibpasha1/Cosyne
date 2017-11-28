@@ -8,6 +8,7 @@ import Register from './register';
 import Dashboard from './dashboard';
 import SocialMedia from './social_media';
 import MediaProfile from './media_profile';
+import Campaigns from './campaigns';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -19,4 +20,5 @@ export function registerScreens() {
   Navigation.registerComponent('cosyne.Dashboard', () => Dashboard);
   Navigation.registerComponent('cosyne.SocialMedia', () => SocialMedia);
   Navigation.registerComponent('cosyne.MediaProfile', () => MediaProfile);
+  Navigation.registerComponent('cosyne.Campaigns', () => Campaigns);
 }
