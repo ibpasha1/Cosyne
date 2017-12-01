@@ -14,6 +14,11 @@ const Business = require('./models/business.js');
 const Campaign = require('./models/campaign.js');
 const Loc = require('./models/location.js');
 const User = require('./models/user.js');
+const googleMapsClient = require('@google/maps').createClient({
+  key: 'your API key here'
+});
+
+//https://stackoverflow.com/questions/4749706/lookup-city-and-state-by-zip-google-geocode-api
 
 const app = express();
 const apiRoutes = express.Router();
