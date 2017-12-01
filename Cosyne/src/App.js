@@ -49,9 +49,9 @@ global.startInnerScope = function(){
         screen: 'cosyne.Home' // this is a registered name for a screen
       },
       {
-        label: 'Three',
-        screen: 'cosyne.Login', // iOS only
-        title: 'Login'
+        label: 'Campaigns',
+        screen: 'cosyne.Campaigns', // iOS only
+        title: 'Campaigns'
       },
       {
         label: 'Social Media',
