@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 //import { styles } from '../components/login_style';
+//what the actual f word dog like wtf is this shit wtf
 import PropTypes from 'prop-types';
 import {
   Alert,
