@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-//import { styles } from '../components/login_style';
-//what the actual f word dog like wtf is this shit wtf
+import { styles } from '../components/login_style';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -158,8 +157,11 @@ class Login extends Component {
                 </Text>
               </Row>
              //new button 
-                
-
+             <View style={styles.login}>
+                <TouchOpacity style={styles.loginButton}>
+                  <Text style={styles.loginButtonText}>log in</Text>
+                  </TouchOpacity>
+              </View>
             </Col>
           </Row>
         </Grid>
