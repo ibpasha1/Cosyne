@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//import { styles } from '../components/login_style';
 import PropTypes from 'prop-types';
 import {
   Alert,
@@ -113,10 +114,12 @@ class Login extends Component {
             <Col size={15} />
             <Col size={70}>
               <Image style={{
+                width: 380,
+                height: 200,
                 flex: 1,
                 aspectRatio: 1.5,
                 resizeMode: 'contain'}}
-                source={require('../assets/imgs/COSIGN-LOGO.jpg')} />
+                source={require('../assets/imgs/cosyneCOLOR5.png')} />
             </Col>
             <Col size={15} />
           </Row>
@@ -153,19 +156,9 @@ class Login extends Component {
                 <Text style={{height: 100}}>
                 </Text>
               </Row>
-              <Button
-                raised
-                disabled = {false}
-                buttonStyle = {{
-                  backgroundColor: 'white',
-                  borderColor: '#334433',
-                }}
-                color = '#334433'
-                icon={{name: 'launch', color: '#334433'}}
-                title='Launch'
-                underlayColor = '#334433'
-                onPress = {this.handleSubmit}
-              />
+             //new button 
+                
+
             </Col>
           </Row>
         </Grid>
