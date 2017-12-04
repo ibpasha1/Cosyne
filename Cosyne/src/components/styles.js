@@ -8,7 +8,7 @@ module.exports = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
     padding: 20,
     marginTop: Platform.OS === 'android' ? 56 : 0,
   },

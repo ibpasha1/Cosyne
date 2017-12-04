@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { styles } from '../components/login_style';
 import {
   Alert,
   Image,
@@ -113,11 +114,13 @@ class Register extends Component {
           <Row>
             <Col size={15} />
             <Col size={70}>
-              <Image style={{
+            <Image style={{
+                width: 380,
+                height: 200,
                 flex: 1,
                 aspectRatio: 1.5,
                 resizeMode: 'contain'}}
-                source={require('../assets/imgs/COSIGN-LOGO.jpg')} />
+                source={require('../assets/imgs/cosyneCOLOR5.png')} />
             </Col>
             <Col size={15} />
           </Row>
@@ -126,7 +129,7 @@ class Register extends Component {
             <Col size={84}>
               <Hoshi
                 autoCapitalize = 'none'
-                label={'Email address'}
+                label={'email'}
                 borderColor={'#008894'}
                 onChangeText={(email) => this.handleEmail(email)}
                 value={this.state.email}
@@ -138,7 +141,7 @@ class Register extends Component {
                 autoCapitalize = 'none'
                 editable={this.state.validationMessage  ? false : true}
                 secureTextEntry
-                label={'Password'}
+                label={'password'}
                 borderColor={'#008894'}
                 onChangeText={(password) => this.setState({password})}
                 value={this.state.password}
@@ -147,7 +150,7 @@ class Register extends Component {
                 autoCapitalize = 'none'
                 editable={this.state.validationMessage  ? false : true}
                 secureTextEntry
-                label={'Password confirm'}
+                label={'comfirm-password'}
                 borderColor={'#008894'}
                 onChangeText={(password_confirm) => this.comparePasswords(password_confirm)}
                 value={this.state.password_confirm}
@@ -162,18 +165,17 @@ class Register extends Component {
                 </Text>
               </Row>
               <Button
-                raised
-                disabled = {this.state.validationMessage || !this.state.pass_match ? true : false}
-                buttonStyle = {{
-                  backgroundColor: 'white',
-                  borderColor: '#334433',
-                }}
-                color = '#334433'
-                icon={{name: 'flight', color: '#334433'}}
-                title='Start'
-                underlayColor = '#334433'
-                onPress = {this.handleSubmit}
-              />
+              buttonStyle = {{
+                borderWidth: 1,
+                borderRadius: 20,
+                height: 40,
+                alignItems: 'center',
+                backgroundColor: 'white',
+              }}
+              color='black'
+              title='LOGIN' />
+              
+              <Text style={styles.loginButtonText }>create account</Text>
             </Col>
           </Row>
         </Grid>
@@ -183,3 +185,10 @@ class Register extends Component {
 }
 
 export default Register;
+ //new button 
+ //<View style={styles.login}>
+ //<TouchOpacity style={styles.loginButton}>
+  // <Text style={styles.loginButtonText}>log in</Text>
+  // </TouchOpacity>
+//</View>
+//new button 

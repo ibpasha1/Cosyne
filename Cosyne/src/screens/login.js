@@ -162,6 +162,7 @@ class Login extends Component {
                   <Text style={styles.loginButtonText}>log in</Text>
                   </TouchOpacity>
               </View>
+              //new button 
             </Col>
           </Row>
         </Grid>
