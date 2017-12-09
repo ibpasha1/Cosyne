@@ -15,7 +15,7 @@ const Campaign = require('./models/campaign.js');
 const Loc = require('./models/location.js');
 const User = require('./models/user.js');
 const googleMapsClient = require('@google/maps').createClient({
-  key: 'your API key here'
+  key: 'AIzaSyCS5VYedPFpQsPWla1Zxu7pNo-aKASBV2E'
 });
 
 //https://stackoverflow.com/questions/4749706/lookup-city-and-state-by-zip-google-geocode-api
@@ -55,7 +55,7 @@ apiRoutes.use(function(req, res, next){
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
 
-  let token = req.body.token || req.query.token || req.headers['x-access-token'];
+  let token = req.body.token || req.query.token || req.headers['X-Access-Token'];
   if (token){
     jwt.verify(token, app.get('secret'), function(err, decoded){
       if (err){
@@ -192,10 +192,10 @@ app.post('/register', function(req, res){
       } else {
         var newUser = new User();
         newUser.email = req.body.email;
-        newUser.username = req.body.username;
-        newUser.first_name = req.body.firstname;
-        newUser.last_name = req.body.lastname;
-        newUser.account_type = req.body.account_type;
+        newUser.username = req.body.username || null;
+        newUser.first_name = req.body.firstname || null;
+        newUser.last_name = req.body.lastname || null;
+        newUser.account_type = req.body.account_type || null;
         newUser.password = newUser.generateHash(req.body.password);
         newUser.verified = false;
         newUser.save(function(err) {
@@ -211,6 +211,19 @@ app.post('/register', function(req, res){
     res.status(500).send({ msg: 'null_email'});
   }
 });
+
+app.get('/locations/:location', function(req, res){
+  console.log(req);
+  googleMapsClient.geocode({
+    address: req.params.location
+  }, function(err, response) {
+    if (!err) {
+      console.log(response.json.results);
+      res.json(response.json.results);
+    }
+  });
+});
+
 
 app.listen(app.get('port'), function(){
   console.log(`Started on port ${app.get('port')}`);

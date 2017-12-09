@@ -13,19 +13,16 @@ import {
 import { Navigation } from 'react-native-navigation';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import { Button, ButtonGroup, FormLabel, FormInput, FormValidationMessage, Slider, Text } from 'react-native-elements';
-import { Hoshi } from 'react-native-textinput-effects';
+import { Kaede, Isao } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import SInfo from 'react-native-sensitive-info'
+//import { Dropdown } from 'react-native-material-dropdown';
 
-const appStyles = require('../components/styles');
+//const appStyles = require('../components/styles');
 
 class Campaign extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      email: '',
-      password: '',
-    }
     this._toggleNavBar = 'hidden';
     let to = this._toggleNavBar;
     this.props.navigator.toggleNavBar({
@@ -39,7 +36,24 @@ class Campaign extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   componentWillMount(){
-
+    this.setState({
+      email: '',
+      business_name: '',
+      campaign_name: '',
+      loc: '',
+      min_age: 0,
+      max_age: 1,
+      password: '',
+      addressSearch: '',
+      addressList: [],
+      locationData: [{
+        value: 'Banana',
+      }, {
+        value: 'Mango',
+      }, {
+        value: 'Pear',
+      }]
+    });
   }
   componentDidMount(){
 
@@ -99,9 +113,92 @@ class Campaign extends Component {
   login = () => {
 
   }
+  submitCampaign = () => {
+    SInfo.getItem('token', {
+    sharedPreferencesName: 'mySharedPrefs',
+    keychainService: 'myKeychain'}).then(token => {
+      fetch(`http://localhost:3000/api/campaigns`, {
+        method: 'GET',
+        headers: {
+          'X-Access-Token': token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => {
+        if (!response.ok){
+          console.warn(response.json());
+        }
+        return response.json();
+      })
+      .then((responseJson) => {
+        let locList = [];
+        responseJson.forEach(function(addresses){
+          let complete_address = '';
+          addresses['address_components'].forEach(function(value){
+            complete_address += value['long_name'] + " ";
+          });
+          //console.warn(complete_address);
+          locList.push(complete_address);
+        });
+        this.setState({addressList: locList});
+        //console.warn(responseJson);
+        //SInfo.setItem('token', responseJson['token'], {});
+      }).catch((err)=> {
+        Alert.alert(
+              'Campaign Error',
+              'Campaign did not submit',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed!')},
+              ]
+            )
+      });
+    });
+
+  }
+  getLocationData = (address) => {
+    if (address){
+      this.setState({loc: address});
+      fetch(`http://localhost:3000/locations/${address}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => {
+        if (!response.ok){
+          //console.warn(response.json());
+        }
+        return response.json();
+      })
+      .then((responseJson) => {
+        let locList = [];
+        responseJson.forEach(function(addresses){
+          let complete_address = '';
+          addresses['address_components'].forEach(function(value){
+            complete_address += value['long_name'] + " ";
+          });
+          //console.warn(complete_address);
+          locList.push(complete_address);
+        });
+        this.setState({addressList: locList});
+        //console.warn(responseJson);
+        //SInfo.setItem('token', responseJson['token'], {});
+      }).catch((err)=> {
+        console.warn('Unable to get location date');
+      });
+    }
+  }
+
   render(){
     const buttons = ['Hello', 'World', 'Buttons'];
     const { selectedIndex } = this.state;
+    let dropdownData = [{
+      value: 'Banana',
+    }, {
+      value: 'Mango',
+    }, {
+      value: 'Pear',
+    }];
     return (
       <KeyboardAwareScrollView>
         <Grid>
@@ -128,62 +225,72 @@ class Campaign extends Component {
           </Row>
           <Row>
             <Col size={50}>
-              <Hoshi
+              <Isao
                 isRequired
-                label={'Business name'}
+                style={styles.input}
+                label={'Business Name'}
+                activeColor={'#008894'}
+                passiveColor={'#dadada'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(business_name) => this.setState({business_name})}
+                value={this.state.business_name}
               />
             </Col>
             <Col size={50}>
-              <Hoshi
+              <Isao
                 isRequired
-                label={'Campaign name'}
+                style={styles.input}
+                label={'Campaign Name'}
+                activeColor={'#008894'}
+                passiveColor={'#dadada'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(campaign_name) => this.setState({campaign_name})}
+                value={this.state.campaign_name}
               />
             </Col>
           </Row>
           <Row>
             <Col size={100}>
-              <Hoshi
+              <Isao
                 isRequired
+                style={styles.input}
                 label={'Location'}
+                activeColor={'#008894'}
+                passiveColor={'#dadada'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(loc) => this.getLocationData(loc)}
+                value={this.state.loc}
               />
             </Col>
           </Row>
           <Row>
             <Col size={4} />
             <Col size={44}>
-              <Text>Min: {this.state.value}</Text>
+              <Text>Min Age:</Text>
               <Slider
-                value={this.state.value}
-                onValueChange={(value) => this.setState({value})} />
-              <Text>Value: {this.state.value}</Text>
+                value={this.state.min_age}
+                minimumValue={0}
+                maximumValue={this.state.max_age}
+                onValueChange={(min_age) => this.setState({min_age})} />
+              <Text>Value: {this.state.min_age}</Text>
             </Col>
             <Col size={4} />
             <Col size={44}>
-              <Text>Max: {this.state.value}</Text>
+              <Text>Max Age:</Text>
               <Slider
-                value={this.state.value}
-                onValueChange={(value) => this.setState({value})} />
-              <Text>Value: {this.state.value}</Text>
+                minimumValue={this.state.min_age}
+                maximumValue={100}
+                value={this.state.max_age}
+                onValueChange={(max_age) => this.setState({max_age})} />
+              <Text>Value: {this.state.max_age}</Text>
             </Col>
             <Col size={4} />
           </Row>
           <Row>
             <Col>
               <Picker
-                selectedValue={this.state.language}
-                onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                selectedValue={this.state.gender}
+                onValueChange={(itemValue, itemIndex) => this.setState({gender: itemValue})}>
                 <Picker.Item label="Male" value="male" />
                 <Picker.Item label="Female" value="female" />
               </Picker>
@@ -191,49 +298,58 @@ class Campaign extends Component {
           </Row>
           <Row>
             <Col size={100}>
-              <Hoshi
+              <Isao
                 isRequired
+                style={styles.input}
                 label={'Reward'}
+                activeColor={'#da7071'}
+                passiveColor={'#dadada'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(reward) => this.setState({reward})}
+                value={this.state.reward}
               />
             </Col>
           </Row>
           <Row>
             <Col size={100}>
-              <Hoshi
+              <Isao
                 isRequired
-                label={'Product Value'}
+                style={styles.input}
+                label={'Product value'}
+                activeColor={'#008894'}
+                passiveColor={'#008894'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(product_value) => this.setState({product_value})}
+                value={this.state.product_value}
               />
             </Col>
           </Row>
           <Row>
             <Col size={100}>
-              <Hoshi
+              <Isao
                 isRequired
-                label={'Expiration Date'}
+                style={styles.input}
+                label={'Expires'}
+                activeColor={'#008894'}
+                passiveColor={'#008894'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(expiration) => this.setState({expiration})}
+                value={this.state.expiration}
               />
             </Col>
           </Row>
           <Row>
+
             <Col size={100}>
-              <Hoshi
+              <Isao
                 isRequired
+                style={styles.input}
                 label={'Script'}
+                activeColor={'#008894'}
+                passiveColor={'#008894'}
                 autoCapitalize = 'none'
-                borderColor={'#008894'}
-                onChangeText={(email) => this.setState({email})}
-                value={this.state.email}
+                onChangeText={(script) => this.setState({script})}
+                value={this.state.script}
               />
             </Col>
           </Row>
@@ -250,8 +366,12 @@ class Campaign extends Component {
               icon={{name: 'launch', color: '#334433'}}
               title='Launch'
               underlayColor = '#334433'
-              onPress = {this.handleSubmit}
+              onPress = {this.getLocationData}
             />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
             </Col>
           </Row>
         </Grid>
@@ -259,5 +379,34 @@ class Campaign extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 24,
+    backgroundColor: 'white',
+  },
+  content: {
+    // not cool but good enough to make all inputs visible when keyboard is active
+    paddingBottom: 300,
+  },
+  card1: {
+    paddingVertical: 16,
+  },
+  card2: {
+    padding: 16,
+  },
+  input: {
+    marginTop: 4,
+  },
+  title: {
+    paddingBottom: 16,
+    textAlign: 'center',
+    color: '#404d5b',
+    fontSize: 20,
+    fontWeight: 'bold',
+    opacity: 0.8,
+  },
+});
 
 export default Campaign;

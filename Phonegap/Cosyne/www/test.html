@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Material Design Bottom Bar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css'>
+    <link rel="stylesheet" href="css/bottom_tabs.css">
+    <style>
+            .button {
+                 background-color: #ff6666; /* Green */
+                 border: none;
+                 color: white;
+                 padding: 8px 150px;
+                 text-align: center;
+                 text-decoration: none;
+                 display: inline-block;
+                 font-size: 16px;
+                 margin: 4px 2px;
+                 cursor: pointer;
+                 border-radius: 2px;
+                }
+
+                body    {
+                background-color: #3B3C3D;
+                }
+        
+
+
+                .button1 {
+                background-color: #ff6666; 
+                color: black; 
+                border: 2px solid #ff6666;
+                }
+        
+                .button2 {
+                background-color: #34495e; 
+                color: black; 
+                border: 2px solid #34495e;
+                }
+
+                .nav-wrapper {
+                  background-color: #3B3C3D !important;
+                }
+
+                .collection-item {
+                background-color: #fff !important;
+                }
+
+                
+            </style>
+</head>
+<body>
+ 
+    <div class="row">
+        <div class="col s12">
+            <ul class="bottom_tabs noindicator tabs">
+                <li class="tab col s3"><a href="#test1" data-ripple-color="#212121"><i class="material-icons">dashboard</i></a></li>
+                <li class="tab col s3"><a class="active" href="#test2" data-ripple-color="212121"><i class="material-icons">view_list</i></a></li>
+                <li class="tab col s3"><a href="#test3" data-ripple-color="#212121"><i class="material-icons">center_focus_weak</i></a></li>
+            </ul>
+        </div>
+
+        <div id="test1" class="col s12">
+          <nav>
+            <div class="nav-wrapper">
+              <center><a>account</a></center>
+              <ul id="nav-mobile" class="left hide-on-med-and-down">
+              
+              </ul>
+            </div>
+          </nav>   
+          <div class="container" style="width:350px">
+            <div class="row">
+              <form class="col s12">
+                <div class="row">
+                  <div class="input-field col s6">
+                    <input placeholder="insta username" id="" type="text" class="validate">
+                    
+                  </div>
+                  <div class="input-field col s6">
+                    <input placeholder="" id="last_name" type="text" class="validate">
+                    
+                  </div>
+                </div>
+           </div>
+      </div>
+    </div>
+
+
+
+       <div id="test2" class="col s12">
+        <nav>
+          <div class="nav-wrapper">
+            <center><a>global queue | market cap: 542 | total coin: 31243</a></center>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+            </ul>
+          </div>
+        </nav>   
+
+        
+            <ul class="collection">
+              <li class="collection-item avatar">
+                <img src="Img/coffee.png" alt="" class="circle">
+                <span class="title">16oz Coffee</span>
+                <p>Kalaids LLC <br>
+                  12/5/2017
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+              <li class="collection-item avatar">
+                <img src="Img/pizza.png" alt="" class="circle">
+                <span class="title">Cheese Slize</span>
+                <p>Gordons Pizza <br>
+                  12/12/2017
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+              <li class="collection-item avatar">
+                <img src="Img/hamburguer.png" alt="" class="circle">
+                <span class="title">Large Hamburger</span>
+                <p>Five Guys <br>
+                  12/12/2017
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+              <li class="collection-item avatar">
+                <img src="Img/fries.png" alt="" class="circle">
+                <span class="title">Title</span>
+                <p>First Line <br>
+                  Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+              <li class="collection-item avatar">
+                <img src="Img/doughnut.png" alt="" class="circle">
+                <span class="title">Title</span>
+                <p>First Line <br>
+                  Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+          
+              <li class="collection-item avatar">
+                <img src="Img/ice-cream.png" alt="" class="circle">
+                <span class="title">Title</span>
+                <p>First Line <br>
+                  Second Line
+                </p>
+                <a href="#!" class="secondary-content"><i class="material-icons">add_circle
+                </i></a>
+              </li>
+      
+        </ul>
+       </div>
+    
+
+          <div id="test3" class="col s12">
+    
+        </div>
+    </div>
+
+
+    <script src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js'></script>
+    <script src="js/bottom_tabs.js"></script>
+    <script>
+            
+                       $(document).ready(function() {
+                       $('select').material_select();
+                       $(".button-collapse").sideNav();
+                       $('.timepicker').pickatime({
+                         default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+                         fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+                         twelvehour: false, // Use AM/PM or 24-hour format
+                         donetext: 'OK', // text for done-button
+                         cleartext: 'Clear', // text for clear-button
+                         canceltext: 'Cancel', // Text for cancel-button
+                         autoclose: false, // automatic close timepicker
+                         ampmclickable: true, // make AM PM clickable
+                         aftershow: function(){} //Function for after opening timepicker
+                              });
+                
+                            });
+                   
+               </script>
+</body>
+
+</html>
