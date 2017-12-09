@@ -73,13 +73,12 @@ class Login extends Component {
     .then((responseJson) => {
       if (responseJson['token']){
         SInfo.setItem('token', responseJson['token'], {
-          sharedPreferencesName: 'mySharedPrefs',
-          keychainService: 'myKeychain'
+          sharedPreferencesName: 'cosynePref',
+          keychainService: 'cosyneKeychain'
           }).then((value) =>
             global.startInnerScope()
         );
       }
-      //SInfo.setItem('token', responseJson['token'], {});
     }).catch((err)=> {
       Alert.alert(
             'Alert',

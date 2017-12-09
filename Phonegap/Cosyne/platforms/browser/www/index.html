@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+      <!-- Compiled and minified JavaScript -->
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <title>Cosyne - Business </title>
+  <body>
+  <style>
+      #form-switch   {
+       display:none
+      }
+      #register-form {
+      display:none
+      }
+      #form-switch:checked~#register-form {
+      display:block
+      }
+      #form-switch:checked~#login-form    {
+      display:none
+      }
+
+      body    {
+        display: flex ;
+        min-height: 100vh;
+        flex-direction: column;
+        background-color: #3B3C3D;
+      }
+
+      main    {
+       flex: 1 0 auto;
+      }
+
+      .footer {
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          background-color: #000;
+          color: white;
+          text-align: center;
+      }
+
+
+      .button {
+       background-color: #4CAF50; /* Green */
+       border: none;
+       color: white;
+       padding: 8px 150px;
+       text-align: center;
+       text-decoration: none;
+       display: inline-block;
+       font-size: 16px;
+       margin: 4px 2px;
+       cursor: pointer;
+       border-radius: 50px;
+      }
+
+      .button1 {
+      background-color: #22313F; 
+      color: white; 
+      text-align: center;
+      }
+
+      ::-webkit-input-placeholder {
+      text-align: center;
+      font-size: 16px;
+      }
+
+     
+     
+  </style>
+  <a href="dashboard.html"><h5 class="center-align" style="margin-top: 80px;"><img src="Img/internet.png" alt="" height="100" width="100"></h5></a>
+  <div class="container" style="width:100px">
+        <div class="col m6">
+            <div class="row">
+            <input type='checkbox' id='form-switch'>
+                <form class="col s12" id='login-form' action="" method='post'>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="email" type="email" class="validate" name="email" placeholder="email" required> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="pass" type="password" class="validate" name="password"  placeholder="password" required>
+                        </div>
+                    </div>
+                    <a href="test.html"><p class="center-align"><font color="white">login</font></p></a>
+                   
+                   <center> <label for='form-switch'><span>create account</span></label></center>
+                </form>
+                <form class="col s12" id='register-form' method='post'>
+                <div class="row">
+                        <div class="input-field col s12">
+                            <input id="text" type="text" name="username" class="validate" placeholder="username" id="username" required>
+                        </div>
+                    </div>
+                <div class="row">
+                        <div class="input-field col s12">
+                           <input id="email" type="email" name="email" class="validate" placeholder="email" id="email" required>             
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12"> 
+                            <input id="pass" type="password" class="validate" name="password" placeholder="password" id="password" required>
+                        </div>
+                    </div>
+                    <p class="center-align"><font color="white">register</font></p>
+                    <center><label for='form-switch'>sign In</label></center>
+                </form>
+            </div>
+        </div>
+</div>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('#register-form').submit(function(e) {
+  e.preventDefault();
+  $.ajax({
+     type: "POST",
+     url: 'server/influencer_register.php',
+     data: $(this).serialize(),
+     success: function(data)
+     {
+        if (data === 'register') {
+          window.location = 'test.html';
+        }
+        else {
+          alert('Invalid Credentials');
+        }
+     }
+ });
+});
+});
+  </script>
+
+<div class="footer">
+<div class="footer-copyright">
+          <div class="container">
+       &copy; <?php echo date("Y"); ?> Cosyne Inc 
+          </div>
+      </div>
+</div>
+    <!--Import jQuery before wafdkflmdkf;dk;fk;materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    
+  </body>
+</html>

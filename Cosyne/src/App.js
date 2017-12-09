@@ -41,12 +41,12 @@ global.startInnerScope = function(){
     tabs: [
       {
         label: 'Dashboard',
-        screen: 'cosyne.Dashboard', // iOS only
+        screen: 'cosyne.Campaigns', // iOS only
         title: 'Screen One'
       },
       {
         label: 'Two',
-        screen: 'cosyne.Home' // this is a registered name for a screen
+        screen: 'cosyne.Tester' // this is a registered name for a screen
       },
       {
         label: 'Campaigns',
