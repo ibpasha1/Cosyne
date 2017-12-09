@@ -11,9 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
+    <script src="js/login.js" defer></script>
   </head>
   <title>Cosyne - Business </title>
-  <body>
+  <body ng-app="cosyne">
     <style>
         #form-switch   {
          display:none
@@ -77,27 +80,27 @@
     </style>
     <a href="dashboard.html"><h5 class="center-align" style="margin-top: 80px;"><img src="Img/internet.png" alt="" height="100" width="100"></h5></a>
     <div class="container" style="width:100px">
-      <div class="col m6">
+      <div class="col m6" ng-controller="loginCtrl as log">
         <div class="row">
           <input type='checkbox' id='form-switch' />
           <form class="col s12" id='login-form' action="" method='post'>
             <div class="row">
               <div class="input-field col s12">
-                <input id="email" type="email" class="validate" name="email" placeholder="email" required>
+                <input id="email" ng-model="log.email" type="email" class="validate" name="email" placeholder="email" required>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <input id="pass" type="password" class="validate" name="password"  placeholder="password" required>
+                <input id="pass" ng-model="log.password" type="password" class="validate" name="password"  placeholder="password" required>
               </div>
             </div>
-            <a href="test.html"><p class="center-align"><font color="white">login</font></p></a>
+            <button ng-click="log.submit()">Login</button>
             <center><label for='form-switch'><span>create account</span></label></center>
           </form>
           <form class="col s12" id='register-form' method='post'>
             <div class="row">
               <div class="input-field col s12">
-                <input id="text" type="text" name="username" class="validate" placeholder="username" id="username" required>
+                <input id="text" type="text" name="username" class="validate" placeholder="username" id="username" ng-model="log.username" required>
               </div>
             </div>
             <div class="row">
@@ -123,5 +126,12 @@
         </div>
       </div>
     </div>
+
+    <!-- <div id="cosyne-content" />
+    <script>
+    $(function(){
+      $("#cosyne-content").load("login.html");
+    });
+    </script> -->
   </body>
 </html>

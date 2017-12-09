@@ -192,10 +192,10 @@ app.post('/register', function(req, res){
       } else {
         var newUser = new User();
         newUser.email = req.body.email;
-        newUser.username = req.body.username;
-        newUser.first_name = req.body.firstname;
-        newUser.last_name = req.body.lastname;
-        newUser.account_type = req.body.account_type;
+        newUser.username = req.body.username || null;
+        newUser.first_name = req.body.firstname || null;
+        newUser.last_name = req.body.lastname || null;
+        newUser.account_type = req.body.account_type || null;
         newUser.password = newUser.generateHash(req.body.password);
         newUser.verified = false;
         newUser.save(function(err) {
